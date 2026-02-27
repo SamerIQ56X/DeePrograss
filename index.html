@@ -285,7 +285,8 @@
     inset: 0;
     background: rgb(7 10 14 / 74%);
   }
-  Full Range    position: relative;
+  .range-modal-card {
+    position: relative;
     z-index: 1;
     width: min(360px, 95vw);
     border: 1px solid #3f4d61;
@@ -445,7 +446,7 @@
     min-height: 300px;
     padding: 8px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
   #progressChart {
     width: 100%;
@@ -466,7 +467,7 @@
     opacity: 0;
     transition: opacity 120ms ease;
     white-space: nowrap;
-    z-index: 3;
+    z-index: 8;
   }
   .chart-tooltip.visible { opacity: 1; }
   .empty-chart {
@@ -630,7 +631,7 @@
   <script>
   "use strict";
   const JAKARTA_OFFSET_MS = 420 * 60 * 1000;
-  const entries = [{"id":"3f11cd72-fd36-4add-8a98-117fe2b39533","date":"2026-02-21","paragraphs":3},{"id":"70ad75e1-b073-4ecb-a948-d74505be1442","date":"2026-02-22","paragraphs":1},{"id":"f9ec41cb-96db-4e60-b6f7-1dde937d9dc8","date":"2026-02-23","paragraphs":1},{"id":"ce8ddeae-6845-46ce-ac24-b9c80d2f2e76","date":"2026-02-24","paragraphs":0}];
+  const entries = [{"id":"d8202107-9d14-4f91-b893-04337a4a8d9c","date":"2026-02-21","paragraphs":3},{"id":"a3ecf0a3-ff8a-448f-9ee7-c65f4940e8f1","date":"2026-02-22","paragraphs":1},{"id":"d6c448d8-59c6-4b6b-b965-d9c7d25b2b73","date":"2026-02-23","paragraphs":1},{"id":"1614170b-bfc1-4e2b-a554-6c72eccf2901","date":"2026-02-25","paragraphs":0.5}];
   const elements = {
     totalParagraphs: document.getElementById("totalParagraphs"),
     averageParagraphs: document.getElementById("averageParagraphs"),
@@ -658,7 +659,7 @@
     motivationParticles: document.getElementById("motivationParticles"),
     motivationHeart: document.getElementById("motivationHeart"),
   };
-  const numberFormat = new Intl.NumberFormat("en-US");
+  const numberFormat = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
   const shortDate = new Intl.DateTimeFormat("en-US", { day: "numeric", month: "short", timeZone: "UTC" });
   const motivationState = {
     isOpen: false,
@@ -671,7 +672,7 @@
         id: typeof item.id === "string" ? item.id : "",
         date: normalizeDateKey(item.date),
         paragraphs: Number.isFinite(Number(item.paragraphs))
-          ? Math.max(0, Math.floor(Number(item.paragraphs)))
+          ? Math.max(0, Number(item.paragraphs))
           : 0,
       }))
       .filter((item) => Boolean(item.date))
@@ -861,7 +862,7 @@
     for (let i = 0; i < 5; i += 1) {
       const ratio = i / 4;
       const y = margin.top + ratio * plotHeight;
-      const value = Math.round(maxValue * (1 - ratio));
+      const value = maxValue * (1 - ratio);
       svg.appendChild(createSvg("line", {
         x1: margin.left, y1: y, x2: width - margin.right, y2: y, stroke: "#46505e", "stroke-width": "1", "stroke-dasharray": "4 7"
       }));
